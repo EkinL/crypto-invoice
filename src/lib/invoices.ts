@@ -53,6 +53,18 @@ export const seededInvoices: Invoice[] = [
     description: "Maquettes landing page",
     status: "DUE",
   },
+  {
+    id: "inv_004",
+    reference: "INV-2026-004",
+    vendorName: "Test Vendor",
+    vendorAddress: "0x4444444444444444444444444444444444444444",
+    amountUsd: "0.10",
+    amountUsdc: parseUsdc("0.10"),
+    currency: "USDC",
+    dueDate: "2026-01-30",
+    description: "Test invoice (0.10 USDC)",
+    status: "DUE",
+  },
 ];
 
 export function listInvoices(): Invoice[] {
@@ -60,5 +72,17 @@ export function listInvoices(): Invoice[] {
 }
 
 export function getInvoiceById(id: string): Invoice | undefined {
-  return seededInvoices.find((inv) => inv.id === id);
+  const normalized = safeDecodeId(id);
+  return (
+    seededInvoices.find((inv) => inv.id === normalized) ||
+    seededInvoices.find((inv) => inv.reference === normalized)
+  );
+}
+
+function safeDecodeId(raw: string): string {
+  try {
+    return decodeURIComponent(raw).trim();
+  } catch {
+    return raw.trim();
+  }
 }

@@ -1,13 +1,21 @@
 // app/invoice/[id]/status/page.tsx
 import Link from "next/link";
+import { txUrl } from "@/lib/chain";
 import { getInvoiceById } from "@/lib/invoices";
+import { parseReceiptFromSearchParams } from "@/lib/payments";
+import { formatUsdc } from "@/lib/usdc";
 
-export default function InvoiceStatusPage({
+export default async function InvoiceStatusPage({
   params,
+  searchParams,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
-  const invoice = getInvoiceById(params.id);
+  const { id } = await params;
+  const resolvedSearchParams = await searchParams;
+  const invoice = getInvoiceById(id);
+  const receipt = parseReceiptFromSearchParams(resolvedSearchParams);
 
   if (!invoice) {
     return (
@@ -36,9 +44,45 @@ export default function InvoiceStatusPage({
           <div className="font-medium">{invoice.status}</div>
         </div>
 
-        <div className="mt-4 text-sm text-gray-700">
-          Receipt & onchain verification will appear here in later steps.
-        </div>
+        {receipt ? (
+          <div className="mt-4 text-sm">
+            <div className="text-gray-500">Receipt (on-chain)</div>
+            <div className="mt-2 grid gap-2">
+              <div>
+                <div className="text-gray-500">Tx hash</div>
+                <div className="font-mono text-xs break-all">
+                  {receipt.txHash}
+                </div>
+                <a
+                  className="underline underline-offset-4 text-xs"
+                  href={txUrl(receipt.txHash)}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  View on BaseScan
+                </a>
+              </div>
+
+              <div>
+                <div className="text-gray-500">Amount</div>
+                <div className="font-medium">
+                  {formatUsdc(receipt.amountUsdc)} USDC
+                </div>
+              </div>
+
+              <div>
+                <div className="text-gray-500">Recipient</div>
+                <div className="font-mono text-xs break-all">
+                  {receipt.recipient}
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="mt-4 text-sm text-gray-700">
+            Receipt & onchain verification will appear here in later steps.
+          </div>
+        )}
       </section>
     </main>
   );

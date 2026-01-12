@@ -2,13 +2,15 @@
 import Link from "next/link";
 import { getInvoiceById } from "@/lib/invoices";
 import { formatUsdc, usdcExplorerUrl } from "@/lib/usdc";
+import { InvoiceActions } from "@/components/InvoiceActions";
 
-export default function InvoiceDetailPage({
+export default async function InvoiceDetailPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  const invoice = getInvoiceById(params.id);
+  const { id } = await params;
+  const invoice = getInvoiceById(id);
 
   if (!invoice) {
     return (
@@ -77,22 +79,11 @@ export default function InvoiceDetailPage({
           <div className="mt-1">{invoice.description}</div>
         </div>
 
-        <div className="mt-6 flex gap-3">
-          <button
-            disabled
-            className="rounded-lg px-4 py-2 bg-gray-200 text-gray-600 cursor-not-allowed"
-            title="Payment flow is implemented in a later step"
-          >
-            Pay in USDC (coming next)
-          </button>
-
-          <Link
-            href={`/invoice/${invoice.id}/status`}
-            className="rounded-lg px-4 py-2 border"
-          >
-            View status
-          </Link>
-        </div>
+        <InvoiceActions
+          invoiceId={invoice.id}
+          amountUsdc={invoice.amountUsdc}
+          vendorAddress={invoice.vendorAddress}
+        />
       </section>
     </main>
   );
