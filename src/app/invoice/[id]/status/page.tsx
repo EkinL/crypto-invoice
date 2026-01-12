@@ -19,9 +19,14 @@ export default async function InvoiceStatusPage({
 
   if (!invoice) {
     return (
-      <main className="max-w-3xl mx-auto p-6">
-        <h1 className="text-xl font-semibold">Invoice not found</h1>
-        <Link className="underline underline-offset-4" href="/">
+      <main className="max-w-3xl mx-auto px-6 pt-10">
+        <h1 className="text-xl font-semibold text-slate-900">
+          Invoice not found
+        </h1>
+        <Link
+          className="text-sm font-medium text-slate-700 underline underline-offset-4"
+          href="/"
+        >
           Back
         </Link>
       </main>
@@ -29,32 +34,37 @@ export default async function InvoiceStatusPage({
   }
 
   return (
-    <main className="max-w-3xl mx-auto p-6">
-      <header className="mb-6">
-        <Link className="underline underline-offset-4" href={`/invoice/${invoice.id}`}>
+    <main className="max-w-3xl mx-auto px-6 pt-10">
+      <header className="mb-6 animate-fade-up">
+        <Link
+          className="text-sm font-medium text-slate-700 underline underline-offset-4"
+          href={`/invoice/${invoice.id}`}
+        >
           ← Back to invoice
         </Link>
-        <h1 className="text-2xl font-bold mt-3">Payment status</h1>
-        <p className="text-gray-600 mt-1">{invoice.reference}</p>
+        <h1 className="text-3xl font-semibold mt-3 text-slate-900">
+          Payment status
+        </h1>
+        <p className="text-slate-600 mt-1">{invoice.reference}</p>
       </header>
 
-      <section className="rounded-xl border p-4">
+      <section className="rounded-2xl border border-[var(--panel-border)] bg-[var(--panel)] p-6 shadow-sm backdrop-blur animate-fade-up">
         <div className="text-sm">
-          <div className="text-gray-500">Current status</div>
-          <div className="font-medium">{invoice.status}</div>
+          <div className="text-slate-500">Current status</div>
+          <div className="font-medium text-slate-900">{invoice.status}</div>
         </div>
 
         {receipt ? (
           <div className="mt-4 text-sm">
-            <div className="text-gray-500">Receipt (on-chain)</div>
+            <div className="text-slate-500">Receipt (on-chain)</div>
             <div className="mt-2 grid gap-2">
               <div>
-                <div className="text-gray-500">Tx hash</div>
+                <div className="text-slate-500">Tx hash</div>
                 <div className="font-mono text-xs break-all">
                   {receipt.txHash}
                 </div>
                 <a
-                  className="underline underline-offset-4 text-xs"
+                  className="underline underline-offset-4 text-xs text-slate-700"
                   href={txUrl(receipt.txHash)}
                   target="_blank"
                   rel="noreferrer"
@@ -64,14 +74,14 @@ export default async function InvoiceStatusPage({
               </div>
 
               <div>
-                <div className="text-gray-500">Amount</div>
-                <div className="font-medium">
+                <div className="text-slate-500">Amount</div>
+                <div className="font-medium text-slate-900">
                   {formatUsdc(receipt.amountUsdc)} USDC
                 </div>
               </div>
 
               <div>
-                <div className="text-gray-500">Recipient</div>
+                <div className="text-slate-500">Recipient</div>
                 <div className="font-mono text-xs break-all">
                   {receipt.recipient}
                 </div>
@@ -79,7 +89,7 @@ export default async function InvoiceStatusPage({
             </div>
           </div>
         ) : (
-          <div className="mt-4 text-sm text-gray-700">
+          <div className="mt-4 text-sm text-slate-700">
             Receipt & onchain verification will appear here in later steps.
           </div>
         )}

@@ -101,10 +101,10 @@ export function InvoiceActions({
         <button
           disabled={!canPay}
           onClick={handlePay}
-          className={`rounded-lg px-4 py-2 ${
+          className={`rounded-full px-5 py-2.5 text-sm font-semibold shadow-sm transition ${
             canPay
-              ? "bg-black text-white"
-              : "bg-gray-200 text-gray-600 cursor-not-allowed"
+              ? "bg-slate-900 text-white hover:bg-slate-800"
+              : "bg-slate-200 text-slate-500 cursor-not-allowed"
           }`}
           title={helperText}
         >
@@ -118,16 +118,16 @@ export function InvoiceActions({
             ? "Retry payment"
             : "Pay in USDC"}
         </button>
-        <div className="mt-1 text-xs text-gray-500">{helperText}</div>
-        <div className="mt-1 text-xs text-gray-500">
+        <div className="mt-1 text-xs text-slate-500">{helperText}</div>
+        <div className="mt-1 text-xs text-slate-500">
           Payment state: {status}
         </div>
-        {error && <div className="mt-1 text-xs text-red-600">{error}</div>}
+        {error && <div className="mt-1 text-xs text-rose-600">{error}</div>}
       </div>
 
       <Link
         href={statusHref}
-        className="rounded-lg px-4 py-2 border"
+        className="rounded-full px-5 py-2.5 border border-[var(--panel-border)] bg-[var(--panel)] text-sm font-medium text-slate-900 shadow-sm hover:shadow-md transition"
       >
         {status === "confirmed" ? "View receipt" : "View status"}
       </Link>

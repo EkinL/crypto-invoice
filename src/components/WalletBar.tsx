@@ -31,12 +31,27 @@ export function WalletBar() {
     ? "Connecting..."
     : "Not connected";
 
+  const statusBadgeClass = isConnected
+    ? "bg-emerald-100 text-emerald-800"
+    : "bg-slate-100 text-slate-700";
+
   return (
-    <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between text-sm">
+    <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between text-sm">
       <div className="flex flex-col gap-1">
-        <div className="font-medium">{statusLabel}</div>
+        <div className="flex items-center gap-2">
+          <span
+            className={`inline-flex items-center rounded-full px-2 py-1 text-xs font-semibold ${statusBadgeClass}`}
+          >
+            {status === "connecting" || status === "reconnecting"
+              ? "CONNECTING"
+              : isConnected
+              ? "CONNECTED"
+              : "DISCONNECTED"}
+          </span>
+          <div className="font-medium text-slate-900">{statusLabel}</div>
+        </div>
         {isConnected && !isCorrectNetwork && (
-          <div className="text-red-600">
+          <div className="text-amber-700">
             Wrong network. Switch to Base Sepolia.
           </div>
         )}
@@ -48,7 +63,7 @@ export function WalletBar() {
       <div className="flex items-center gap-2">
         {!isConnected ? (
           <button
-            className="rounded-lg px-3 py-2 border text-sm"
+            className="rounded-full px-4 py-2 border border-[var(--panel-border)] bg-[var(--panel)] text-sm font-medium shadow-sm hover:shadow-md transition"
             onClick={() => connector && connect({ connector })}
             disabled={!connector || isPending}
           >
@@ -58,7 +73,7 @@ export function WalletBar() {
           <>
             {!isCorrectNetwork && (
               <button
-                className="rounded-lg px-3 py-2 border text-sm"
+                className="rounded-full px-4 py-2 border border-amber-200 bg-amber-50 text-amber-900 text-sm font-medium hover:bg-amber-100 transition"
                 onClick={() => switchChain({ chainId: expectedChainId })}
                 disabled={isSwitching}
               >
@@ -66,7 +81,7 @@ export function WalletBar() {
               </button>
             )}
             <button
-              className="rounded-lg px-3 py-2 border text-sm"
+              className="rounded-full px-4 py-2 border border-[var(--panel-border)] bg-[var(--panel)] text-sm font-medium hover:shadow-md transition"
               onClick={() => disconnect()}
             >
               Disconnect

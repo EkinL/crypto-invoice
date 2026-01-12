@@ -14,9 +14,14 @@ export default async function InvoiceDetailPage({
 
   if (!invoice) {
     return (
-      <main className="max-w-3xl mx-auto p-6">
-        <h1 className="text-xl font-semibold">Invoice not found</h1>
-        <Link className="underline underline-offset-4" href="/">
+      <main className="max-w-3xl mx-auto px-6 pt-10">
+        <h1 className="text-xl font-semibold text-slate-900">
+          Invoice not found
+        </h1>
+        <Link
+          className="text-sm font-medium text-slate-700 underline underline-offset-4"
+          href="/"
+        >
           Back
         </Link>
       </main>
@@ -24,46 +29,48 @@ export default async function InvoiceDetailPage({
   }
 
   return (
-    <main className="max-w-3xl mx-auto p-6">
-      <header className="mb-6">
-        <Link className="underline underline-offset-4" href="/">
+    <main className="max-w-3xl mx-auto px-6 pt-10">
+      <header className="mb-6 animate-fade-up">
+        <Link className="text-sm font-medium text-slate-700 underline underline-offset-4" href="/">
           ← Back
         </Link>
-        <h1 className="text-2xl font-bold mt-3">{invoice.reference}</h1>
-        <p className="text-gray-600 mt-1">{invoice.vendorName}</p>
+        <h1 className="text-3xl font-semibold mt-3 text-slate-900">
+          {invoice.reference}
+        </h1>
+        <p className="text-slate-600 mt-1">{invoice.vendorName}</p>
       </header>
 
-      <section className="rounded-xl border p-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+      <section className="rounded-2xl border border-[var(--panel-border)] bg-[var(--panel)] p-6 shadow-sm backdrop-blur animate-fade-up">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
           <div>
-            <div className="text-gray-500">Status</div>
-            <div className="font-medium">{invoice.status}</div>
+            <div className="text-slate-500">Status</div>
+            <div className="font-medium text-slate-900">{invoice.status}</div>
           </div>
 
           <div>
-            <div className="text-gray-500">Due date</div>
-            <div className="font-medium">{invoice.dueDate}</div>
+            <div className="text-slate-500">Due date</div>
+            <div className="font-medium text-slate-900">{invoice.dueDate}</div>
           </div>
 
           <div>
-            <div className="text-gray-500">Amount</div>
-            <div className="font-medium">
+            <div className="text-slate-500">Amount</div>
+            <div className="font-medium text-slate-900">
               {formatUsdc(invoice.amountUsdc)} {invoice.currency}
             </div>
-            <div className="text-xs text-gray-500">
+            <div className="text-xs text-slate-500">
               (display: ${invoice.amountUsd})
             </div>
           </div>
 
           <div>
-            <div className="text-gray-500">Vendor address</div>
+            <div className="text-slate-500">Vendor address</div>
             <div className="font-mono text-xs break-all">
               {invoice.vendorAddress}
             </div>
 
             <div className="mt-3 text-sm">
               <a
-                className="underline underline-offset-4"
+                className="underline underline-offset-4 text-slate-700"
                 href={usdcExplorerUrl()}
                 target="_blank"
                 rel="noreferrer"
@@ -75,8 +82,8 @@ export default async function InvoiceDetailPage({
         </div>
 
         <div className="mt-4">
-          <div className="text-gray-500 text-sm">Description</div>
-          <div className="mt-1">{invoice.description}</div>
+          <div className="text-slate-500 text-sm">Description</div>
+          <div className="mt-1 text-slate-800">{invoice.description}</div>
         </div>
 
         <InvoiceActions
